@@ -101,14 +101,26 @@ public final class PrefabManager {
         return null;
     }
 
-    /** What parts of a prefab are copied into a newly created world. */
-    public record CopyOptions(boolean levelDat, boolean playerData, boolean playerProgress, boolean icon) {
+    /**
+     * What parts of a prefab are copied into a newly created world.
+     * <p>
+     * A prefab does not need to be a complete save: folders that only carry dimensions, saved data
+     * or datapacks are valid prefabs too and are listed by the manager.
+     */
+    public record CopyOptions(boolean levelDat, boolean playerData, boolean playerProgress, boolean icon,
+            boolean dimensions, boolean savedData, boolean datapacks) {
         /** Everything, used when a save is turned into a prefab so the copy stays faithful. */
-        public static final CopyOptions ALL = new CopyOptions(true, true, true, true);
+        public static final CopyOptions ALL =
+                new CopyOptions(true, true, true, true, true, true, true);
     }
 
     public static void apply(Path prefab, Path worldFolder, CopyOptions options) throws IOException {
         copyWorld(prefab, worldFolder, options);
+    }
+
+    /** {@return true when the prefab carries a level.dat, i.e. it can be read as a full save} */
+    public static boolean hasLevelData(Path prefab) {
+        return Files.isRegularFile(prefab.resolve("level.dat"));
     }
 
     public static void addPrefab(Path sourceWorld, Path prefabFolder, String name, boolean overwrite) throws IOException {
@@ -165,7 +177,17 @@ public final class PrefabManager {
         if (!options.playerData() && path.startsWith("players/")) {
             return true;
         }
-        return !options.playerProgress() && (path.startsWith("data/stats/") || path.startsWith("data/advancements/"));
+        if (!options.playerProgress() && (path.startsWith("data/stats/") || path.startsWith("data/advancements/"))) {
+            return true;
+        }
+        if (!options.dimensions() && path.startsWith("dimensions/")) {
+            return true;
+        }
+        if (!options.datapacks() && path.startsWith("datapacks/")) {
+            return true;
+        }
+        // Everything else under data/ is saved data written by mods (for example level-wide ids).
+        return !options.savedData() && path.startsWith("data/");
     }
 
     static void deleteRecursively(Path root) throws IOException {

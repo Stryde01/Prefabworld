@@ -111,6 +111,9 @@ Prefab World 把这件事变成一次操作：**把你做好的地图放好，�
 | `copyPlayerData` | `false` | 是否复制 `players/`（背包、坐标、末影箱） |
 | `copyPlayerProgress` | `false` | 是否复制统计与进度 |
 | `copyIcon` | `true` | 是否复制世界图标 |
+| `copyDimensions` | `true` | 是否复制模组维度区块（`dimensions/`） |
+| `copySavedData` | `true` | 是否复制模组世界数据（`data/`，统计与进度除外） |
+| `copyDatapacks` | `true` | 是否复制数据包（`datapacks/`） |
 | `defaultGameMode` | `KEEP` | 强制游戏模式：`KEEP` / `SURVIVAL` / `CREATIVE` / `ADVENTURE` / `SPECTATOR` |
 | `allowCommands` | `KEEP` | 是否允许命令：`KEEP` / `ENABLED` / `DISABLED` |
 
@@ -251,6 +254,9 @@ The config lives in `config/prefabworldmod-local.toml`, or use **Mods → Prefab
 | `copyPlayerData` | `false` | Copy `players/` (inventories, positions, ender chests) |
 | `copyPlayerProgress` | `false` | Copy statistics and advancements |
 | `copyIcon` | `true` | Copy the world icon |
+| `copyDimensions` | `true` | Copy mod dimension chunks (`dimensions/`) |
+| `copySavedData` | `true` | Copy mod world data (`data/`, except stats and advancements) |
+| `copyDatapacks` | `true` | Copy datapacks (`datapacks/`) |
 | `defaultGameMode` | `KEEP` | Force a game mode: `KEEP` / `SURVIVAL` / `CREATIVE` / `ADVENTURE` / `SPECTATOR` |
 | `allowCommands` | `KEEP` | Allow commands: `KEEP` / `ENABLED` / `DISABLED` |
 

@@ -120,6 +120,9 @@ The config lives in `config/prefabworldmod-local.toml`, or use **Mods → Prefab
 | `copyPlayerData` | `false` | Copy `players/` (inventories, positions, ender chests) |
 | `copyPlayerProgress` | `false` | Copy statistics and advancements |
 | `copyIcon` | `true` | Copy the world icon |
+| `copyDimensions` | `true` | Copy mod dimension chunks (`dimensions/`) |
+| `copySavedData` | `true` | Copy mod world data (`data/`, except stats and advancements) |
+| `copyDatapacks` | `true` | Copy datapacks (`datapacks/`) |
 | `defaultGameMode` | `KEEP` | Force a game mode: `KEEP` / `SURVIVAL` / `CREATIVE` / `ADVENTURE` / `SPECTATOR` |
 | `allowCommands` | `KEEP` | Allow commands: `KEEP` / `ENABLED` / `DISABLED` |
 

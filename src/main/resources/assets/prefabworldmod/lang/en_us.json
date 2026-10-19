@@ -12,6 +12,7 @@
   "prefabworldmod.delete": "Delete",
   "prefabworldmod.badge.active": "ACTIVE",
   "prefabworldmod.badge.prefab": "Prefab",
+  "prefabworldmod.meta.dataOnly": "Data only  ·  %s",
   "prefabworldmod.empty.saves": "No saves yet",
   "prefabworldmod.empty.saves.hint": "Create a world first and it will show up here",
   "prefabworldmod.empty.prefabs": "No prefab worlds yet",
@@ -49,6 +50,9 @@
   "prefabworldmod.configuration.copyPlayerData": "Copy player data",
   "prefabworldmod.configuration.copyPlayerProgress": "Copy stats and advancements",
   "prefabworldmod.configuration.copyIcon": "Copy world icon",
+  "prefabworldmod.configuration.copyDimensions": "Copy dimensions",
+  "prefabworldmod.configuration.copySavedData": "Copy saved data",
+  "prefabworldmod.configuration.copyDatapacks": "Copy datapacks",
   "prefabworldmod.configuration.defaultGameMode": "Game mode",
   "prefabworldmod.configuration.allowCommands": "Allow commands"
 }

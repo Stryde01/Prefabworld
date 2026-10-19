@@ -4,6 +4,8 @@
 
 ### 新增
 
+- **部分预制**：预制文件夹不再必须包含 `level.dat`，只放 `dimensions/`、`data/` 或 `datapacks/` 也能作为预制，管理界面会标记为「仅数据」
+- **分项复制开关**：`copyDimensions`、`copySavedData`、`copyDatapacks` 分别控制模组维度区块、世界数据与数据包的复制
 - **游戏内管理界面**：主界面「多人游戏」下方可打开预制世界列表，把存档一键加入预制，启用或删除预制
 - **命令**：`/prefab list|use|add|remove`，支持专用服务器，参数可 Tab 补全，支持带空格的中文名
 - **配置项**：

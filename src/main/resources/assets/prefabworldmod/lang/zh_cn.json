@@ -12,6 +12,7 @@
   "prefabworldmod.delete": "删除",
   "prefabworldmod.badge.active": "启用中",
   "prefabworldmod.badge.prefab": "预制",
+  "prefabworldmod.meta.dataOnly": "仅数据  ·  %s",
   "prefabworldmod.empty.saves": "还没有存档",
   "prefabworldmod.empty.saves.hint": "先创建一个世界，它会出现在这里",
   "prefabworldmod.empty.prefabs": "还没有预制世界",
@@ -49,6 +50,9 @@
   "prefabworldmod.configuration.copyPlayerData": "复制玩家数据（背包等）",
   "prefabworldmod.configuration.copyPlayerProgress": "复制统计与进度",
   "prefabworldmod.configuration.copyIcon": "复制世界图标",
+  "prefabworldmod.configuration.copyDimensions": "复制维度数据",
+  "prefabworldmod.configuration.copySavedData": "复制存档数据",
+  "prefabworldmod.configuration.copyDatapacks": "复制数据包",
   "prefabworldmod.configuration.defaultGameMode": "游戏模式",
   "prefabworldmod.configuration.allowCommands": "允许命令"
 }

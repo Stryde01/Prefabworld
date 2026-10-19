@@ -34,6 +34,7 @@ import net.minecraft.util.Util;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.LevelSummary;
 import net.neoforged.fml.loading.FMLPaths;
+import org.jspecify.annotations.Nullable;
 
 import com.stryde.prefabworldmod.PrefabConfig;
 import com.stryde.prefabworldmod.PrefabManager;
@@ -150,23 +151,25 @@ public class PrefabManageScreen extends Screen {
         }
 
         List<WorldInfo> entries = new ArrayList<>();
-        Set<String> seen = new HashSet<>();
+        Set<String> listed = new HashSet<>();
         try {
             for (LevelSummary summary : summaries(saveSource)) {
                 String id = summary.getLevelId();
-                seen.add(id);
-                entries.add(new WorldInfo(summary, prefabs.contains(id)));
+                listed.add(id);
+                entries.add(WorldInfo.ofSave(summary, prefabs.contains(id)));
             }
         } catch (Exception e) {
             prefabworldmod.LOGGER.error("Failed to read saves", e);
         }
 
-        // Prefabs whose original save has been deleted still need to be listed.
+        // Prefabs whose original save is gone usually still parse, because they carry level.dat.
         if (!prefabs.isEmpty()) {
             try {
                 for (LevelSummary summary : summaries(LevelStorageSource.createDefault(prefabFolder))) {
-                    if (prefabs.contains(summary.getLevelId()) && !seen.contains(summary.getLevelId())) {
-                        entries.add(new WorldInfo(summary, true));
+                    String id = summary.getLevelId();
+                    if (prefabs.contains(id) && !listed.contains(id)) {
+                        entries.add(WorldInfo.ofPartial(summary));
+                        listed.add(id);
                     }
                 }
             } catch (Exception e) {
@@ -174,7 +177,17 @@ public class PrefabManageScreen extends Screen {
             }
         }
 
-        entries.sort(Comparator.comparingLong(info -> -info.summary().getLastPlayed()));
+        // Anything left is a data-only prefab: dimensions, saved data or datapacks without a level.dat.
+        for (String name : prefabs) {
+            if (!listed.contains(name)) {
+                entries.add(WorldInfo.ofDataOnly(name));
+            }
+        }
+
+        entries.sort(Comparator
+                .comparing((WorldInfo info) -> !info.prefab())
+                .thenComparing(info -> -info.lastPlayed())
+                .thenComparing(WorldInfo::displayName));
         return new LoadedData(entries, active);
     }
 
@@ -183,25 +196,25 @@ public class PrefabManageScreen extends Screen {
         return source.loadLevelSummaries(candidates).join();
     }
 
-    private void addPrefab(LevelSummary summary) {
+    private void addPrefab(String levelId) {
         Path prefabFolder = prefabFolder();
-        String name = summary.getLevelId();
+        String name = levelId;
         if (Files.exists(prefabFolder.resolve(name))) {
             this.minecraft.gui.setScreen(new ConfirmScreen(
                     confirmed -> {
                         this.minecraft.gui.setScreen(this);
                         if (confirmed) {
-                            startCopy(summary, prefabFolder, name);
+                            startCopy(prefabFolder, name);
                         }
                     },
                     Component.translatable("prefabworldmod.confirm.overwrite.title"),
                     Component.translatable("prefabworldmod.confirm.overwrite.message", name)));
             return;
         }
-        startCopy(summary, prefabFolder, name);
+        startCopy(prefabFolder, name);
     }
 
-    private void startCopy(LevelSummary summary, Path prefabFolder, String name) {
+    private void startCopy(Path prefabFolder, String name) {
         Path source = this.minecraft.getLevelSource().getLevelPath(name);
         Minecraft minecraft = this.minecraft;
         CompletableFuture.runAsync(() -> {
@@ -255,8 +268,7 @@ public class PrefabManageScreen extends Screen {
         }));
     }
 
-    private static String lastPlayedText(LevelSummary summary) {
-        long played = summary.getLastPlayed();
+    private static String lastPlayedText(long played) {
         return played <= 0L ? "-" : DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date(played));
     }
 
@@ -281,21 +293,49 @@ public class PrefabManageScreen extends Screen {
     }
 
     /** Loads a world's icon, falling back to the vanilla missing-icon texture. */
-    private static FaviconTexture loadIcon(Minecraft minecraft, LevelSummary summary) {
-        FaviconTexture icon = FaviconTexture.forWorld(minecraft.getTextureManager(), summary.getLevelId());
-        Path iconFile = summary.getIcon();
+    private static FaviconTexture loadIcon(Minecraft minecraft, WorldInfo info) {
+        FaviconTexture icon = FaviconTexture.forWorld(minecraft.getTextureManager(), info.levelId());
+        Path iconFile = info.iconPath();
         if (iconFile != null && Files.isRegularFile(iconFile)) {
             try (InputStream stream = Files.newInputStream(iconFile)) {
                 icon.upload(NativeImage.read(stream));
             } catch (Throwable t) {
-                prefabworldmod.LOGGER.warn("Invalid icon for world {}", summary.getLevelId(), t);
+                prefabworldmod.LOGGER.warn("Invalid icon for world {}", info.levelId(), t);
                 icon.clear();
             }
         }
         return icon;
     }
 
-    private record WorldInfo(LevelSummary summary, boolean prefab) {
+    /**
+     * A row in the manager list. {@code summary} is null for prefabs that only carry data folders
+     * (dimensions, saved data, datapacks) and no level.dat, so they cannot be read as a save.
+     */
+    private record WorldInfo(@Nullable LevelSummary summary, String levelId, String displayName, boolean prefab) {
+        boolean partial() {
+            return this.summary == null;
+        }
+
+        long lastPlayed() {
+            return this.summary == null ? 0L : this.summary.getLastPlayed();
+        }
+
+        @Nullable
+        Path iconPath() {
+            return this.summary == null ? null : this.summary.getIcon();
+        }
+
+        static WorldInfo ofSave(LevelSummary summary, boolean prefab) {
+            return new WorldInfo(summary, summary.getLevelId(), summary.getLevelName(), prefab);
+        }
+
+        static WorldInfo ofPartial(LevelSummary summary) {
+            return new WorldInfo(summary, summary.getLevelId(), summary.getLevelName(), true);
+        }
+
+        static WorldInfo ofDataOnly(String name) {
+            return new WorldInfo(null, name, name, true);
+        }
     }
 
     private record LoadedData(List<WorldInfo> entries, String active) {
@@ -325,8 +365,7 @@ public class PrefabManageScreen extends Screen {
             this.children().forEach(WorldEntry::dispose);
             this.clearEntries();
             for (WorldInfo info : entries) {
-                boolean isPrefab = info.prefab();
-                this.addEntry(new WorldEntry(info.summary(), isPrefab, isPrefab && info.summary().getLevelId().equals(activeName)));
+                this.addEntry(new WorldEntry(info, info.prefab() && info.levelId().equals(activeName)));
             }
         }
     }
@@ -335,7 +374,7 @@ public class PrefabManageScreen extends Screen {
         private static final int BUTTON_HEIGHT = 20;
         private static final int ACTION_WIDTH = 50;
 
-        private final LevelSummary summary;
+        private final WorldInfo info;
         private final boolean prefab;
         private final boolean active;
         private final FaviconTexture icon;
@@ -343,24 +382,24 @@ public class PrefabManageScreen extends Screen {
         private final Button useButton;
         private final Button deleteButton;
 
-        WorldEntry(LevelSummary summary, boolean prefab, boolean active) {
-            this.summary = summary;
-            this.prefab = prefab;
+        WorldEntry(WorldInfo info, boolean active) {
+            this.info = info;
+            this.prefab = info.prefab();
             this.active = active;
-            this.icon = loadIcon(Minecraft.getInstance(), summary);
+            this.icon = loadIcon(Minecraft.getInstance(), info);
 
             this.addButton = Button.builder(Component.translatable("prefabworldmod.add"),
-                            button -> addPrefab(summary))
+                            button -> addPrefab(info.levelId()))
                     .width(ACTION_WIDTH)
                     .tooltip(Tooltip.create(Component.translatable("prefabworldmod.tooltip.add")))
                     .build();
             this.useButton = Button.builder(Component.translatable("prefabworldmod.activate"),
-                            button -> activatePrefab(summary.getLevelId()))
+                            button -> activatePrefab(info.levelId()))
                     .width(ACTION_WIDTH)
                     .tooltip(Tooltip.create(Component.translatable("prefabworldmod.tooltip.activate")))
                     .build();
             this.deleteButton = Button.builder(Component.translatable("prefabworldmod.delete"),
-                            button -> deletePrefab(summary.getLevelId()))
+                            button -> deletePrefab(info.levelId()))
                     .width(ACTION_WIDTH)
                     .tooltip(Tooltip.create(Component.translatable("prefabworldmod.tooltip.delete")))
                     .build();
@@ -395,9 +434,11 @@ public class PrefabManageScreen extends Screen {
 
             int textX = x + ICON_SIZE + 4;
             int textWidth = buttonsX - textX - 8;
-            String title = clip(font, this.summary.getLevelName(), textWidth);
+            String title = clip(font, this.info.displayName(), textWidth);
             graphics.text(font, title, textX, y + 1, this.active ? 0xFF55FF55 : 0xFFFFFFFF);
-            String meta = lastPlayedText(this.summary) + "  ·  " + this.summary.getLevelId();
+            String meta = this.info.partial()
+                    ? Component.translatable("prefabworldmod.meta.dataOnly", this.info.levelId()).getString()
+                    : lastPlayedText(this.info.lastPlayed()) + "  ·  " + this.info.levelId();
             graphics.text(font, clip(font, meta, textWidth), textX, y + 11, 0xFF8B8B8B);
             if (this.active) {
                 graphics.text(font, Component.translatable("prefabworldmod.badge.active"), textX, y + 21, 0xFF55FF55);
@@ -427,7 +468,7 @@ public class PrefabManageScreen extends Screen {
 
         @Override
         public Component getNarration() {
-            return Component.literal(this.summary.getLevelName());
+            return Component.literal(this.info.displayName());
         }
     }
 }

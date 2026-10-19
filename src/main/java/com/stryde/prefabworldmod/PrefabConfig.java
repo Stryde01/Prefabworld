@@ -40,6 +40,26 @@ public final class PrefabConfig {
             .comment("Copy the prefab's world icon (icon.png) into new worlds.")
             .define("copyIcon", true);
 
+    public static final ModConfigSpec.BooleanValue COPY_DIMENSIONS = BUILDER
+            .comment(
+                    "Copy the prefab's dimensions folder (chunks of dimensions added by mods) into new worlds.",
+                    "This is what carries a mod dimension's contents, such as a built structure that",
+                    "lives in its own dimension.")
+            .define("copyDimensions", true);
+
+    public static final ModConfigSpec.BooleanValue COPY_SAVED_DATA = BUILDER
+            .comment(
+                    "Copy the prefab's data folder (level-wide saved data written by mods) into new worlds.",
+                    "Statistics and advancements are controlled separately by copyPlayerProgress.")
+            .define("copySavedData", true);
+
+    public static final ModConfigSpec.BooleanValue COPY_DATAPACKS = BUILDER
+            .comment(
+                    "Copy the prefab's datapacks folder into new worlds.",
+                    "Note that a datapack still has to be enabled in the new world's level.dat to load,",
+                    "which this mod does not change unless overwriteLevelDat is on.")
+            .define("copyDatapacks", true);
+
     public enum GameModeOption {
         KEEP,
         SURVIVAL,
@@ -105,6 +125,18 @@ public final class PrefabConfig {
         return COPY_ICON.get();
     }
 
+    public static boolean copyDimensions() {
+        return COPY_DIMENSIONS.get();
+    }
+
+    public static boolean copySavedData() {
+        return COPY_SAVED_DATA.get();
+    }
+
+    public static boolean copyDatapacks() {
+        return COPY_DATAPACKS.get();
+    }
+
     public static GameModeOption defaultGameMode() {
         return DEFAULT_GAME_MODE.get();
     }
@@ -115,6 +147,7 @@ public final class PrefabConfig {
 
     public static PrefabManager.CopyOptions copyOptions() {
         return new PrefabManager.CopyOptions(
-                overwriteLevelDat(), copyPlayerData(), copyPlayerProgress(), copyIcon());
+                overwriteLevelDat(), copyPlayerData(), copyPlayerProgress(), copyIcon(),
+                copyDimensions(), copySavedData(), copyDatapacks());
     }
 }
