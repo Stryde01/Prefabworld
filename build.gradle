@@ -2,6 +2,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.148'
+    id 'com.modrinth.minotaur' version '2.10.0'
     id 'idea'
 }
 
@@ -180,5 +181,34 @@ idea {
     module {
         downloadSources = true
         downloadJavadoc = true
+    }
+}
+
+// Publishing to Modrinth. Set the token in the MODRINTH_TOKEN environment variable
+// (or a modrinthToken property in ~/.gradle/gradle.properties) and run `./gradlew modrinth`.
+def modrinthToken = System.getenv('MODRINTH_TOKEN') ?: (project.findProperty('modrinthToken') ?: '')
+
+modrinth {
+    token = modrinthToken
+    projectId = 'prefabworldmod'
+    versionNumber = mod_version
+    versionName = "PrefabWorld ${mod_version} for Minecraft ${minecraft_version}"
+    versionType = 'release'
+    uploadFile = jar
+    gameVersions = [minecraft_version]
+    loaders = ['neoforge']
+    changelog = file('CHANGELOG.md').text
+    syncBodyFrom = rootProject.file('README.md').text
+    dependencies {
+        required.project 'neoforge'
+    }
+}
+
+// Normal builds stay independent of the publishing token; only the upload task needs it.
+tasks.named('modrinth').configure {
+    doFirst {
+        if (modrinthToken.isEmpty()) {
+            throw new GradleException('Set MODRINTH_TOKEN (or modrinthToken in ~/.gradle/gradle.properties) to publish.')
+        }
     }
 }

@@ -1,9 +1,20 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
+        // Maven Central mirrors: Central itself blocks automated access from this network.
+        maven {
+            name = 'AliyunPublic'
+            url = 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            name = 'HuaweiCloud'
+            url = 'https://repo.huaweicloud.com/repository/maven'
+        }
     }
 }
 
 plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
 }
+
+rootProject.name = 'PrefabWorldMod'
