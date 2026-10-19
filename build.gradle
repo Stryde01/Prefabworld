@@ -190,7 +190,8 @@ def modrinthToken = System.getenv('MODRINTH_TOKEN') ?: (project.findProperty('mo
 
 modrinth {
     token = modrinthToken
-    projectId = 'prefabworldmod'
+    // Project ID rather than the slug: the slug was renamed and IDs never change.
+    projectId = '2BkUiGTh'
     versionNumber = mod_version
     versionName = "PrefabWorld ${mod_version} for Minecraft ${minecraft_version}"
     versionType = 'release'
