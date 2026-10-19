@@ -1,10 +1,13 @@
 # Prefab World
 
-**把一张地图放进文件夹，之后新建的每一个世界都会按它自动生成。**
+**把一张地图放进文件夹，之后新建的每一个世界都会按它自动生成。**<br>
+**Drop a map into a folder — every world you create from then on is generated from it.**
 
-为地图作者、整合包作者和服务器主设计。不需要命令方块，不需要数据包。
+为地图作者、整合包作者和服务器主设计。不需要命令方块，不需要数据包。<br>
+Built for mapmakers, modpack authors and server owners. No command blocks, no datapacks.
 
-<sub>English version below.</sub>
+<details>
+<summary><b>中文文档</b></summary>
 
 ## 它能解决什么问题
 
@@ -135,15 +138,10 @@ A：不会，玩家数据默认不复制。需要的话把 `copyPlayerData` 设�
 
 All Rights Reserved — 见 [LICENSE](https://github.com/Stryde01/Prefabworld/blob/main/LICENSE)。二次分发或整合进你自己的包里请先开 Issue 联系。
 
----
+</details>
 
-# Prefab World · English
-
-**Drop a map into a folder — every world you create from then on is generated from it.**
-
-Built for mapmakers, modpack authors and server owners. No command blocks, no datapacks.
-
-<sub>中文版本在上方。</sub>
+<details>
+<summary><b>English documentation</b></summary>
 
 ## What problem it solves
 
@@ -273,6 +271,8 @@ Open an [Issue](https://github.com/Stryde01/Prefabworld/issues). English or Chin
 ## License
 
 All Rights Reserved — see [LICENSE](https://github.com/Stryde01/Prefabworld/blob/main/LICENSE). If you want to redistribute it or bundle it into your own pack, please open an Issue first.
+
+</details>
 
 ---
 
