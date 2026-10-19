@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/logo.png" alt="" width="96">
+<img src="https://raw.githubusercontent.com/Stryde01/Prefabworld/main/docs/logo.png" alt="" width="96">
 
 # Prefab World
 
