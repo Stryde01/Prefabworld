@@ -1,100 +1,159 @@
-# PrefabWorld
+<div align="center">
 
-为 Minecraft **26.3 (NeoForge)** 编写的模组：把一个世界存档设为"预制地图"，之后新建的每一个世界都会以它为基础生成。
+<img src="docs/logo.png" alt="" width="96">
 
-适合**整合包作者**和**地图作者**使用——玩家正常游玩时不会看到任何额外界面。
+# Prefab World
+
+**把一张地图放进文件夹，之后新建的每一个世界都会按它自动生成。**<br>
+为地图作者、整合包作者和服务器主设计。不需要命令方块，不需要数据包。
+
+[![Latest release](https://img.shields.io/github/v/release/Stryde01/Prefabworld?label=release&color=2ea043)](../../releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/Stryde01/Prefabworld/total?color=2ea043)](../../releases)
+[![Minecraft](https://img.shields.io/badge/Minecraft-26.3-62B47A)](#兼容性)
+[![NeoForge](https://img.shields.io/badge/NeoForge-26.3.0.92-ED8D36)](#兼容性)
+[![License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
+
+**[中文](README.md) | [English](README_EN.md)**
+
+### [⬇ 下载最新版本](../../releases/latest)　·　[Modrinth 页面](https://modrinth.com/mod/prefabworldmod)
+
+</div>
+
+## 它能解决什么问题
+
+做地图和整合包的人都有一个麻烦：每开一个测试世界、每让玩家开一个新局，都要从零开始搭同一个出生区、同一座起始岛、同一个新手大厅。
+
+Prefab World 把这件事变成一次操作：**把你做好的地图放好，之后所有新世界都从它开始。**
+
+## 怎么用
+
+1. 安装模组（客户端和服务端都需要）
+2. 把你准备好的模板地图（一个普通的存档文件夹）放进实例目录下的 `prefab_saves` 文件夹
+3. 正常点"新建世界"
+
+新世界就会直接带着你的模板地形和建筑生成。想换开局布局，换掉文件夹里的模板就行。
+
+```text
+.minecraft/
+└── prefab_saves/
+    ├── .active            # 记录当前启用的模板
+    └── 你的模板地图/
+        ├── level.dat
+        ├── region/
+        └── ...
+```
+
+放着**一个**模板时会自动启用；放多个时，用管理界面或 `/prefab use <名字>` 选一个。
+
+## 适合谁
+
+| 身份 | 用来做什么 |
+|------|-----------|
+| 地图作者 | 每次开新游戏，起始区域保持一致，方便测试和发布 |
+| 整合包作者 | 让每个新世界都带自定义出生点、新手岛或教程区 |
+| 服务器主 | 开服前直接备好大厅、起始地块、活动场地 |
 
 ## 功能
 
-- **预制世界**：把任意存档加入预制列表，新建世界时自动复制其地形、建筑、结构等内容
-- **游戏内管理界面**：在主界面启用后，可以添加、启用、删除预制世界
-- **命令支持**：专用服务器可用 `/prefab` 命令完成同样的操作
-- **可选复制内容**：玩家数据、统计与进度、世界图标都可以独立开关
-- **世界规则覆盖**：可强制新建世界的游戏模式和是否允许命令
-- **默认隐藏**：管理入口默认关闭，玩家看不到
+- **模板即插即用**：放一个存档文件夹就能生效，不用写配置
+- **图形化管理**：在游戏里直接把存档加入预制列表，一键启用或删除
+- **服务器命令**：专用服务器用 `/prefab` 完成同样的操作
+- **可选复制内容**：玩家背包、统计进度、世界图标、`level.dat` 都能单独开关
+- **世界规则覆盖**：可强制新世界的游戏模式和是否允许命令
+- **玩家无感**：管理入口默认隐藏，普通玩家看不到任何额外界面
+- **不依赖其他模组**：单独安装即可运行
+
+## 兼容性
+
+| 版本 | 加载器 | 状态 |
+|------|--------|------|
+| 26.3 | NeoForge 26.3.0.92+ | ✅ 支持（当前版本） |
+| 1.20.1 | Forge | 旧版本，不再更新 |
+| 1.18.2 | Forge | 旧版本，不再更新 |
+
+> 目前只支持 NeoForge。Fabric 暂无计划——如果你需要，在 Issue 里说，需求够多会加。
 
 ## 安装
 
 1. 安装 Minecraft 26.3 和 NeoForge 26.3.0.92 或更高版本
-2. 把 `prefabworldmod-2.0.0.jar` 放入 `mods` 文件夹
-3. 需要 Java 25
+2. 把 `.jar` 放进 `mods` 文件夹
+3. 启动游戏（需要 Java 25）
 
-## 使用
+## 管理界面
 
-### 直接放文件夹
-
-首次启动后，游戏目录下会生成 `prefab_saves` 文件夹。把想作为模板的世界存档**整个文件夹**复制进去，然后：
-
-- 如果里面**只有一个**预制文件夹，它会自动启用
-- 如果里面有**多个**，用管理界面或 `/prefab use <名字>` 选择一个
-
-之后新建的每个世界都会以该预制地图为基础。
-
-### 管理界面
-
-在配置里把 `showManageButton` 设为 `true` 后，主界面「多人游戏」下方会出现「预制世界」按钮。打开后是一个存档列表：
+在配置里把 `showManageButton` 设为 `true`，主界面「多人游戏」下方就会出现「预制世界」按钮。打开后是一个存档列表：
 
 - 每条显示地图图标、名称、上次游玩时间和存档 ID
 - **普通存档**行右侧有「加入」按钮 → 复制为预制
 - **预制**行右侧有「启用 / 删除」按钮
 - 当前启用的预制名称显示为绿色并标记「启用中」
 
-### 命令（管理员）
+## 命令
+
+管理员（权限等级 2）可用：
 
 | 命令 | 说明 |
-|---|---|
+|------|------|
 | `/prefab list` | 列出所有预制，标记当前启用的 |
 | `/prefab use <名字>` | 启用指定预制 |
-| `/prefab add <存档名>` | 把 `saves/` 里的存档复制为预制（同名覆盖） |
-| `/prefab remove <名字>` | 删除预制（无法撤销） |
+| `/prefab add <存档名>` | 把 `saves/` 里的存档复制为预制 |
+| `/prefab remove <名字>` | 删除预制 |
 
-需要权限等级 2（OP）。参数支持 Tab 补全，带空格的中文名也能用。
+参数支持 Tab 补全，带空格的中文名也能用。
 
 ## 配置
 
-配置文件位于 `config/prefabworldmod-local.toml`，也可在游戏内「模组 → PrefabWorld → 配置」中修改。
+配置文件位于 `config/prefabworldmod-local.toml`，也可在游戏内「模组 → Prefab World → 配置」中修改。
 
 | 配置项 | 默认 | 说明 |
-|---|---|---|
-| `folderName` | `prefab_saves` | 预制文件夹名称（相对游戏目录） |
+|--------|------|------|
+| `folderName` | `prefab_saves` | 预制文件夹名称 |
 | `showManageButton` | `false` | 是否在主界面显示管理入口 |
-| `overwriteLevelDat` | `false` | 是否同时复制预制的 `level.dat`（种子、难度等） |
+| `overwriteLevelDat` | `false` | 是否复制模板的 `level.dat`（世界名、时间等） |
 | `copyPlayerData` | `false` | 是否复制 `players/`（背包、坐标、末影箱） |
-| `copyPlayerProgress` | `false` | 是否复制统计与进度（`data/stats`、`data/advancements`） |
+| `copyPlayerProgress` | `false` | 是否复制统计与进度 |
 | `copyIcon` | `true` | 是否复制世界图标 |
-| `defaultGameMode` | `KEEP` | 强制游戏模式：`KEEP`/`SURVIVAL`/`CREATIVE`/`ADVENTURE`/`SPECTATOR` |
-| `allowCommands` | `KEEP` | 是否允许命令：`KEEP`/`ENABLED`/`DISABLED` |
+| `defaultGameMode` | `KEEP` | 强制游戏模式：`KEEP` / `SURVIVAL` / `CREATIVE` / `ADVENTURE` / `SPECTATOR` |
+| `allowCommands` | `KEEP` | 是否允许命令：`KEEP` / `ENABLED` / `DISABLED` |
 
-**默认值的设计意图**：预制图作为地图模板，玩家进入时应该是干净的开局，所以玩家数据和进度默认不复制；图标默认复制，这样新世界会显示与预制相同的预览图；游戏模式和命令默认跟随新建世界时的选择。
+默认值的设计意图：模板是地图，玩家进去应该是干净的开局，所以玩家数据默认不复制；图标默认复制，新世界会显示同一张预览图；游戏模式和命令默认跟随新建世界时的选择。
 
-> 注意：复制 `level.dat` 会让新建世界沿用预制世界的地图名称、时间和上次游玩信息。运行中的服务器会在保存时重写 `level.dat`，所以只有新建那一刻生效。
+## 常见问题
 
-## 工作原理
+**Q：新世界还是普通地形？**
 
-新建世界时，NeoForge 触发 `ServerAboutToStartEvent`，此时世界目录已经确定但尚未加载。模组在该时刻：
+A：检查模板文件夹是否正好在实例目录下的 `prefab_saves` 里，且里面是一整个存档文件夹，不是压缩包。可以用 `/prefab list` 或管理界面确认是否已启用。
 
-1. 读取 `prefab_saves/.active` 找到当前启用的预制
-2. 按配置项把预制内容复制进世界目录（跳过 `session.lock`）
-3. 可选地覆盖游戏模式和命令开关
+**Q：多人服务器能用吗？**
 
-已存在的世界不会触发复制——通过 `worldData.overworldData().isInitialized()` 判断。
+A：能。服务端和客户端都要装同一个版本。
 
-## 从 1.x 升级
+**Q：会覆盖我原来世界的存档吗？**
 
-- 旧版本的 `preset_world` 文件夹会被自动识别为启用项
-- 数据目录仍是 `prefab_saves`，配置项 `folderName` 可改
-- 管理入口默认关闭，需要手动开启
+A：不会。它只影响之后新建的世界，已有世界不受影响。
 
-## 构建
+**Q：能不能指定某个世界用模板、其他世界不用？**
 
-```bash
-./gradlew build
-```
+A：所有新建世界都会按当前启用的模板生成。已有的世界不受影响。
 
-产物在 `build/libs/`。需要 JDK 25。
+**Q：为什么主界面没有「预制世界」按钮？**
 
-构建依赖 `maven.neoforged.net`，中国大陆网络下可能需要代理。
+A：为了让普通玩家看不到，这个入口默认关闭。在配置里打开 `showManageButton` 即可。
 
-## 许可
+**Q：玩家进来会带着模板作者的背包吗？**
+
+A：不会，玩家数据默认不复制。需要的话把 `copyPlayerData` 设为 `true`。
+
+## 反馈
+
+在 [Issues](https://github.com/Stryde01/Prefabworld/issues) 提问，中文英文都可以。附上游戏版本和崩溃日志（如果有）会更快定位。
+
+## 许可证
 
 MIT，见 [LICENSE](LICENSE)。原项目由 jiangbai 开发。
+
+---
+
+<div align="center">
+<sub>Made for mapmakers and modpack authors.</sub>
+</div>
