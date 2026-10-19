@@ -6,6 +6,8 @@
 为地图作者、整合包作者和服务器主设计。不需要命令方块，不需要数据包。<br>
 Built for mapmakers, modpack authors and server owners. No command blocks, no datapacks.
 
+<img src="https://raw.githubusercontent.com/Stryde01/Prefabworld/main/docs/manager-screen.png" alt="Prefab manager" width="720">
+
 <details>
 <summary><b>中文文档</b></summary>
 
@@ -77,6 +79,12 @@ Prefab World 把这件事变成一次操作：**把你做好的地图放好，�
 - **普通存档**行右侧有「加入」按钮 → 复制为预制
 - **预制**行右侧有「启用 / 删除」按钮
 - 当前启用的预制名称显示为绿色并标记「启用中」
+
+
+<div align="center">
+<img src="https://raw.githubusercontent.com/Stryde01/Prefabworld/main/docs/title-screen.png" alt="主界面入口" width="520">
+<img src="https://raw.githubusercontent.com/Stryde01/Prefabworld/main/docs/manager-screen.png" alt="管理界面" width="720">
+</div>
 
 ## 命令
 
@@ -211,6 +219,12 @@ Set `showManageButton` to `true` in the config and a **Prefabs** button appears 
 - **Regular saves** have an **Add** button — copies the save into the prefab folder
 - **Prefabs** have **Use / Delete** buttons
 - The active prefab is shown in green with an "ACTIVE" marker
+
+
+<div align="center">
+<img src="https://raw.githubusercontent.com/Stryde01/Prefabworld/main/docs/title-screen.png" alt="Title screen entry" width="520">
+<img src="https://raw.githubusercontent.com/Stryde01/Prefabworld/main/docs/manager-screen.png" alt="Manager screen" width="720">
+</div>
 
 ## Commands
 

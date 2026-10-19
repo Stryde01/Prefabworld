@@ -16,6 +16,10 @@ Built for mapmakers, modpack authors and server owners. No command blocks, no da
 
 ### [⬇ Download on Modrinth](https://modrinth.com/mod/prefabworld)
 
+<img src="docs/manager-screen.png" alt="The prefab manager screen" width="640">
+
+<sub>Manager screen: icon, name and last-played time per row, with Use / Delete or Add on the right</sub>
+
 </div>
 
 ## What problem it solves
@@ -36,10 +40,12 @@ The new world is generated with your template's terrain and structures. Want a d
 .minecraft/
 └── prefab_saves/
     ├── .active            # remembers which template is active
-    └── your-template-map/
+    ├── OldCastle/
+    │   ├── level.dat
+    │   └── region/
+    └── StarterIsland/
         ├── level.dat
-        ├── region/
-        └── ...
+        └── region/
 ```
 
 With a **single** template in the folder it is activated automatically; with several, pick one in the manager screen or with `/prefab use <name>`.
@@ -54,38 +60,34 @@ With a **single** template in the folder it is activated automatically; with sev
 
 ## Features
 
-- **Plug and play** — one save folder, no config to write
-- **In-game manager** — add saves to the prefab list, activate or delete them with a click
-- **Server commands** — `/prefab` does the same on dedicated servers
-- **Selective copying** — player data, progress, world icon and `level.dat` are each toggleable
-- **World rule overrides** — force the game mode and whether commands are allowed
-- **Invisible to players** — the manager entry is hidden by default
-- **No dependencies** — runs on its own
-
-## Compatibility
-
-| Version | Loader | Status |
-|---------|--------|--------|
-| 26.3 | NeoForge 26.3.0.92+ | ✅ Supported (current) |
-| 1.20.1 | Forge | Legacy, no longer updated |
-| 1.18.2 | Forge | Legacy, no longer updated |
-
-> NeoForge only for now. Fabric is not planned; ask in Issues if you need it — enough requests and we'll add it.
-
-## Installation
-
-1. Install Minecraft 26.3 and NeoForge 26.3.0.92 or newer
-2. Drop the `.jar` into your `mods` folder
-3. Launch the game (requires Java 25)
+| Feature | What it does |
+|---------|--------------|
+| **Plug and play** | One save folder, no config to write |
+| **In-game manager** | Add saves to the prefab list, activate or delete them with a click |
+| **Server commands** | `/prefab` does the same on dedicated servers |
+| **Selective copying** | Player data, progress, world icon and `level.dat` are each toggleable |
+| **World rule overrides** | Force the game mode and whether commands are allowed |
+| **Invisible to players** | The manager entry is hidden by default |
+| **No dependencies** | Runs on its own |
 
 ## Manager screen
 
-Set `showManageButton` to `true` in the config and a **Prefabs** button appears on the title screen, right below Multiplayer. It opens a list of your saves:
+Set `showManageButton` to `true` in the config and a **Prefabs** button appears on the title screen, right below Multiplayer.
+
+<div align="center">
+<img src="docs/title-screen.png" alt="The Prefabs entry on the title screen" width="560">
+</div>
+
+It opens a list of your saves:
 
 - Each row shows the world icon, name, last played time and save id
 - **Regular saves** have an **Add** button — copies the save into the prefab folder
 - **Prefabs** have **Use / Delete** buttons
 - The active prefab is shown in green with an "ACTIVE" marker
+
+<div align="center">
+<img src="docs/manager-screen.png" alt="The prefab manager screen" width="720">
+</div>
 
 ## Commands
 
@@ -98,7 +100,13 @@ For admins (permission level 2):
 | `/prefab add <save>` | Copy a save from `saves/` into the prefab folder |
 | `/prefab remove <name>` | Delete a prefab |
 
-Arguments are tab-completed and support names with spaces, including Chinese characters.
+Arguments are tab-completed and support names with spaces, including Chinese characters. A typical flow:
+
+```text
+/prefab add OldCastle   # copy the save "OldCastle" into the prefab folder
+/prefab use OldCastle   # activate it
+/prefab list            # confirm what is active
+```
 
 ## Configuration
 
@@ -117,35 +125,71 @@ The config lives in `config/prefabworldmod-local.toml`, or use **Mods → Prefab
 
 Why these defaults: a prefab is a map, so players should start clean — player data and progress are not copied. The icon is copied so every new world shows the same preview image. Game mode and commands follow whatever was picked when creating the world.
 
+## Compatibility
+
+| Version | Loader | Status |
+|---------|--------|--------|
+| 26.3 | NeoForge 26.3.0.92+ | ✅ Supported (current) |
+| 1.20.1 | Forge | Legacy, no longer updated |
+| 1.18.2 | Forge | Legacy, no longer updated |
+
+**Installation**: install Minecraft 26.3 and NeoForge 26.3.0.92 or newer, drop the `.jar` into `mods`, launch the game (requires Java 25).
+
+> NeoForge only for now. Fabric is not planned; ask in Issues if you need it — enough requests and we'll add it.
+
 ## FAQ
 
-**Q: My new world still has normal terrain.**
+<details>
+<summary><b>My new world still has normal terrain.</b></summary>
 
-A: Check that the template folder sits directly inside `prefab_saves` in your instance directory, and that it is an extracted save folder, not a zip. Use `/prefab list` or the manager screen to confirm it is active.
+Check that the template folder sits directly inside `prefab_saves` in your instance directory, and that it is an extracted save folder, not a zip. Use `/prefab list` or the manager screen to confirm it is active.
 
-**Q: Does it work on multiplayer servers?**
+</details>
 
-A: Yes. The server and every client need the same version installed.
+<details>
+<summary><b>Does it work on multiplayer servers?</b></summary>
 
-**Q: Will it overwrite my existing worlds?**
+Yes. The server and every client need the same version installed.
 
-A: No. It only affects worlds created after installation; existing worlds are untouched.
+</details>
 
-**Q: Can I use a template for some worlds and not others?**
+<details>
+<summary><b>Will it overwrite my existing worlds?</b></summary>
 
-A: Every new world uses the currently active template. Existing worlds are unaffected.
+No. It only affects worlds created after installation; existing worlds are untouched.
 
-**Q: Why is there no Prefabs button on the title screen?**
+</details>
 
-A: So that regular players never see it — the entry is off by default. Turn on `showManageButton` in the config.
+<details>
+<summary><b>Why is there no Prefabs button on the title screen?</b></summary>
 
-**Q: Do players inherit the map author's inventory?**
+So that regular players never see it — the entry is off by default. Turn on `showManageButton` in the config.
 
-A: No, player data is not copied by default. Set `copyPlayerData` to `true` if you want it.
+</details>
+
+<details>
+<summary><b>Do players inherit the map author's inventory?</b></summary>
+
+No, player data is not copied by default. Set `copyPlayerData` to `true` if you want it.
+
+</details>
+
+<details>
+<summary><b>Can I use a template for some worlds and not others?</b></summary>
+
+Every new world uses the currently active template. Existing worlds are unaffected.
+
+</details>
+
+## Upgrading from 1.x
+
+- An existing `preset_world` folder is recognised automatically as the active prefab
+- The data folder is still `prefab_saves`, configurable through `folderName`
+- The manager entry is off by default and must be enabled
 
 ## Feedback
 
-Open an [Issue](https://github.com/Stryde01/Prefabworld/issues). English or Chinese, both are fine. Include your game version and a crash log if you have one — it makes debugging much faster.
+Open an [Issue](https://github.com/Stryde01/Prefabworld/issues). English or Chinese, both are fine. Include your game version and a crash log if you have one.
 
 ## License
 
