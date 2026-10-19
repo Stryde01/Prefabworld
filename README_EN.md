@@ -10,7 +10,7 @@ Built for mapmakers, modpack authors and server owners. No command blocks, no da
 [![Modrinth](https://img.shields.io/modrinth/dt/prefabworldmod?label=Modrinth&color=00AF5C)](https://modrinth.com/mod/prefabworldmod)
 [![Minecraft](https://img.shields.io/badge/Minecraft-26.3-62B47A)](#compatibility)
 [![NeoForge](https://img.shields.io/badge/NeoForge-26.3.0.92-ED8D36)](#compatibility)
-[![License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
+[![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-lightgrey)](LICENSE)
 
 **[中文](README.md) | [English](README_EN.md)**
 
@@ -149,7 +149,7 @@ Open an [Issue](https://github.com/Stryde01/Prefabworld/issues). English or Chin
 
 ## License
 
-MIT — see [LICENSE](LICENSE). Originally created by jiangbai.
+All Rights Reserved — see [LICENSE](LICENSE). If you want to redistribute it or bundle it into your own pack, please open an Issue first.
 
 ---
 

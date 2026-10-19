@@ -10,7 +10,7 @@
 [![Modrinth](https://img.shields.io/modrinth/dt/prefabworldmod?label=Modrinth&color=00AF5C)](https://modrinth.com/mod/prefabworldmod)
 [![Minecraft](https://img.shields.io/badge/Minecraft-26.3-62B47A)](#兼容性)
 [![NeoForge](https://img.shields.io/badge/NeoForge-26.3.0.92-ED8D36)](#兼容性)
-[![License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
+[![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-lightgrey)](LICENSE)
 
 **[中文](README.md) | [English](README_EN.md)**
 
@@ -149,7 +149,7 @@ A：不会，玩家数据默认不复制。需要的话把 `copyPlayerData` 设�
 
 ## 许可证
 
-MIT，见 [LICENSE](LICENSE)。原项目由 jiangbai 开发。
+All Rights Reserved，见 [LICENSE](LICENSE)。二次分发或整合进你自己的包里请先开 Issue 联系。
 
 ---
 
