@@ -7,15 +7,14 @@
 **Drop a map into a folder — every world you create from then on is generated from it.**<br>
 Built for mapmakers, modpack authors and server owners. No command blocks, no datapacks.
 
-[![Latest release](https://img.shields.io/github/v/release/Stryde01/Prefabworld?label=release&color=2ea043)](../../releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/Stryde01/Prefabworld/total?color=2ea043)](../../releases)
+[![Modrinth](https://img.shields.io/modrinth/dt/prefabworldmod?label=Modrinth&color=00AF5C)](https://modrinth.com/mod/prefabworldmod)
 [![Minecraft](https://img.shields.io/badge/Minecraft-26.3-62B47A)](#compatibility)
 [![NeoForge](https://img.shields.io/badge/NeoForge-26.3.0.92-ED8D36)](#compatibility)
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
 **[中文](README.md) | [English](README_EN.md)**
 
-### [⬇ Download the latest version](../../releases/latest)　·　[Modrinth page](https://modrinth.com/mod/prefabworldmod)
+### [⬇ Download on Modrinth](https://modrinth.com/mod/prefabworldmod)
 
 </div>
 

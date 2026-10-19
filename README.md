@@ -7,15 +7,14 @@
 **把一张地图放进文件夹，之后新建的每一个世界都会按它自动生成。**<br>
 为地图作者、整合包作者和服务器主设计。不需要命令方块，不需要数据包。
 
-[![Latest release](https://img.shields.io/github/v/release/Stryde01/Prefabworld?label=release&color=2ea043)](../../releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/Stryde01/Prefabworld/total?color=2ea043)](../../releases)
+[![Modrinth](https://img.shields.io/modrinth/dt/prefabworldmod?label=Modrinth&color=00AF5C)](https://modrinth.com/mod/prefabworldmod)
 [![Minecraft](https://img.shields.io/badge/Minecraft-26.3-62B47A)](#兼容性)
 [![NeoForge](https://img.shields.io/badge/NeoForge-26.3.0.92-ED8D36)](#兼容性)
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
 **[中文](README.md) | [English](README_EN.md)**
 
-### [⬇ 下载最新版本](../../releases/latest)　·　[Modrinth 页面](https://modrinth.com/mod/prefabworldmod)
+### [⬇ 在 Modrinth 下载](https://modrinth.com/mod/prefabworldmod)
 
 </div>
 
